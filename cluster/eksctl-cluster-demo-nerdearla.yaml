@@ -36,11 +36,11 @@ iam:
   # ARN of the Cluster IAM Role
   # optional, eksctl creates a new role if not supplied
   # suggested to use one Cluster IAM Role per account
-  serviceRoleARN: arn:aws:iam::381492135688:role/eks-roles-automode-EKSClusterRole
+  serviceRoleARN: arn:aws:iam::381492135688:role/automode-roles-EKSClusterRole
 
 autoModeConfig:
   enabled: true
-  nodeRoleArn: arn:aws:iam::381492135688:role/eks-roles-automode-EKSNodeRole
+  nodeRoleArn: arn:aws:iam::381492135688:role/automode-roles-EKSNodeRole
 
 accessConfig:
   authenticationMode: API_AND_CONFIG_MAP
@@ -49,3 +49,6 @@ accessConfig:
 cloudWatch:
   clusterLogging:
     enableTypes: ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+
+addonsConfig:
+  disableDefaultAddons: true

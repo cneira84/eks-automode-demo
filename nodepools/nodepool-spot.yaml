@@ -1,0 +1,46 @@
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: spot
+spec:
+  disruption:
+    budgets:
+    - nodes: 10%
+    consolidateAfter: 30s
+    consolidationPolicy: WhenEmptyOrUnderutilized
+  template:
+    metadata:
+      labels:
+        EKSAutoNodePool: spot
+    spec:
+      expireAfter: 336h
+      nodeClassRef:
+        group: eks.amazonaws.com
+        kind: NodeClass #usamos la misma NodeClass default de AutoMode
+        name: default
+      requirements:
+      - key: karpenter.sh/capacity-type
+        operator: In
+        values:
+        - spot #a fines de la demostración quitamos spot, aunque la recomendación es dejar al menos spot y ondemand, por si no tuvieramos capacity en spot
+      - key: eks.amazonaws.com/instance-category
+        operator: In
+        values:
+        - c
+        - m
+        - r
+        - t
+      - key: eks.amazonaws.com/instance-generation
+        operator: Gt
+        values:
+        - "4"
+      - key: kubernetes.io/arch
+        operator: In
+        values:
+        - amd64
+        - arm64
+      - key: kubernetes.io/os
+        operator: In
+        values:
+        - linux
+      terminationGracePeriod: 24h0m0s
