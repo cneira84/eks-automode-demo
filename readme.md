@@ -112,12 +112,12 @@ helm uninstall retail-store-app-ui
 
 2. Eliminar cluster
 ```
-eksctl delete cluster $CLUSTER_NAME`
+eksctl delete cluster $CLUSTER_NAME
 ```
 
 3. Eliminar stack de creación de roles
 ```
-aws cloudformation delete-stack --stack-name automode-roles`
+aws cloudformation delete-stack --stack-name automode-roles
 ```
 
 ## Tooling
