@@ -1,8 +1,8 @@
 # EKS Auto Mode - Demo Nerdearla 2025
 
-## Despliegue de un cluster EKS utilizando Auto Mode
+El instructivo contiene los pasos necesarios para desplegar una demo simple, que despliega un cluster de EKS AutoMode y expone una app. Luego se realizarán algunos ajustes a modo de ejemplo sobre optimización de costos y resiliencia.
 
-### Prerequisito: Crear roles necesarios de EKS Auto Mode
+## Prerequisito: Crear roles necesarios de EKS Auto Mode
 EKS Auto Mode requiere dos roles en su creación.
 - El primero permite realizar tareas de rutina sobre el cluster. Más informació en documentación de [Amazon EKS Auto Mode cluster IAM role](https://docs.aws.amazon.com/eks/latest/userguide/auto-cluster-iam-role.html)
 - El segundo permite la operación sobre los nodos. Más información en la documentación de [Amazon EKS Auto Mode node IAM Role](https://docs.aws.amazon.com/eks/latest/userguide/auto-create-node-role.html)
@@ -21,7 +21,7 @@ export CLUSTER_ROLE_ARN=$(aws cloudformation describe-stacks --stack-name $STACK
 export NODE_ROLE_ARN=$(aws cloudformation describe-stacks --stack-name $STACK_ROLES --query 'Stacks[0].Outputs[?OutputKey==`NodeRoleArn`].OutputValue' --output text)
 ```
 
-### Crear el cluster EKS Auto Mode con eksctl
+## Crear el cluster EKS Auto Mode con eksctl
 
 Antes de iniciar, verificar que tenemos el [set-up terminado](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html). Esto solo es necesario si nunca usaste kubectl o eksctl.
 
@@ -32,7 +32,7 @@ export CLUSTER_NAME=cluster-nerdearla
 eksctl create cluster -f ./cluster/eksctl-cluster-demo-nerdearla.yaml
 ```
 
-### Deploy ingress-class
+## Deploy ingress-class
 Para poder publicar nuestra app a internet, necesitamos previamente crear un IngressClass. Este objeto permite la interacción con AWS Load Balancer Controller que ya se encuentra funcionando como parte de EKS Auto Mode. 
 Vamos a desplegar dos objetos:
 1. `IngressParams` que contiene los parametros que utilizará IngressClass como `scheme: internet-facing`
