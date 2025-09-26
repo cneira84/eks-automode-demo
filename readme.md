@@ -2,7 +2,7 @@
 
 ## Despliegue de un cluster EKS utilizando Auto Mode
 
-### Prerequisito: Crear roles necesarios de EKS Auto Mode (Prerequisito)
+### Prerequisito: Crear roles necesarios de EKS Auto Mode
 EKS Auto Mode requiere dos roles en su creación.
 - El primero permite realizar tareas de rutina sobre el cluster. Más informació en documentación de [Amazon EKS Auto Mode cluster IAM role](https://docs.aws.amazon.com/eks/latest/userguide/auto-cluster-iam-role.html)
 - El segundo permite la operación sobre los nodos. Más información en la documentación de [Amazon EKS Auto Mode node IAM Role](https://docs.aws.amazon.com/eks/latest/userguide/auto-create-node-role.html)
@@ -21,7 +21,7 @@ export CLUSTER_ROLE_ARN=$(aws cloudformation describe-stacks --stack-name $STACK
 export NODE_ROLE_ARN=$(aws cloudformation describe-stacks --stack-name $STACK_ROLES --query 'Stacks[0].Outputs[?OutputKey==`NodeRoleArn`].OutputValue' --output text)
 ```
 
-### 1. Crear el cluster EKS Auto Mode con eksctl
+### Crear el cluster EKS Auto Mode con eksctl
 
 Antes de iniciar, verificar que tenemos el [set-up terminado](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html). Esto solo es necesario si nunca usaste kubectl o eksctl.
 
@@ -42,7 +42,7 @@ Vamos a desplegar dos objetos:
 kubectl apply -f ./cluster/ingress-class.yaml
 ```
 
-### Deploy sample app
+## Deploy de una sample app
 Vamos a desplegar una app de ejemplo, que se utiliza como base de demostración para otros workshops y demos: [AWS Container Retail Sample](https://github.com/aws-containers/retail-store-sample-app)
 
 Solo para el caso de UI vamos a utilizar valores custom. Se puede encontrar más información sobre el UI Helm Chart [aquí](https://github.com/aws-containers/retail-store-sample-app/tree/main/src/ui/chart)
@@ -73,6 +73,7 @@ echo "Your application is available at: http://${ALB_URL}"
 ```
 Ahora podemos consultar la URL obtenida desde un browser o ejecutar un `curl http://${ALB_URL}`
 
+## Ajustes y optimizaciones de costos y resiliencia
 ### Ajustando el Nodepool para usar instancias spot
 Con el fin de optimizar costos, podemos crear nuestra propia definición de NodePool e utilizar instancias spot.
 Para monitorear la ejecución vamos a utilizar [eks-node-viewer](https://github.com/awslabs/eks-node-viewer) (este paso es opcional)
@@ -110,10 +111,14 @@ helm uninstall retail-store-app-ui
 ```
 
 2. Eliminar cluster
-`eksctl delete cluster $CLUSTER_NAME`
+```
+eksctl delete cluster $CLUSTER_NAME`
+```
 
 3. Eliminar stack de creación de roles
-`aws cloudformation delete-stack --stack-name automode-roles`
+```
+aws cloudformation delete-stack --stack-name automode-roles`
+```
 
 ## Tooling
 https://github.com/awslabs/eks-node-viewer
