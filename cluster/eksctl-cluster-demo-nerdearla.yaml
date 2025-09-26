@@ -1,0 +1,51 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: automode-nerdearla
+  region: us-east-1
+  version: "1.33"
+  tags:
+    provisioned-by: ekcstl-by-chechu
+
+
+vpc:
+  # Si ya tiene una VPC, reemplazar con el ID de la VPC
+  # id: vpc-0c8b3c3b1b9a0b9b9
+  cidr: 10.10.0.0/16
+  nat:
+    gateway: Single
+  # Para permitir que eksctl cree automáticamente la VPC no especificar subnets
+  # subnets:
+  #   public:
+  #     us-west-2a:
+  #       cidr: 10.10.0.0/19
+  #     us-west-2b:
+  #       cidr: 10.10.32.0/19
+  #     us-west-2c:
+  #       cidr: 10.10.64.0/19
+  #   private:
+  #     us-west-2a:
+  #       cidr: 10.10.96.0/19
+  #     us-west-2b:
+  #       cidr: 10.10.128.0/19
+  #     us-west-2c:
+  #       cidr: 10.10.160.0/19
+
+iam:
+  # ARN of the Cluster IAM Role
+  # optional, eksctl creates a new role if not supplied
+  # suggested to use one Cluster IAM Role per account
+  serviceRoleARN: arn:aws:iam::381492135688:role/eks-roles-automode-EKSClusterRole
+
+autoModeConfig:
+  enabled: true
+  nodeRoleArn: arn:aws:iam::381492135688:role/eks-roles-automode-EKSNodeRole
+
+accessConfig:
+  authenticationMode: API_AND_CONFIG_MAP
+  bootstrapClusterCreatorAdminPermissions: true
+
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["api", "audit", "authenticator", "controllerManager", "scheduler"]
